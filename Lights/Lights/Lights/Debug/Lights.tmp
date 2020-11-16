@@ -1,0 +1,29 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.7</VERSION>
+ <DEVICE>"ATmega32A"</DEVICE>
+ <WORKING_DIR>C:\Users\belob\Desktop\AtmelProjects\Lights\Lights\Lights\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>D:/Program Files\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc</DIR>
+  <DIR>D:\Program Files\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\belob\Desktop\AtmelProjects\Lights\Lights\Lights\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>D:/Program Files\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc\m32adef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\belob\Desktop\AtmelProjects\Lights\Lights\Lights\Debug\Lights.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Lights.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Lights.map</FILE>
+  <FILE>Lights.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <loop><FILE>C:\Users\belob\Desktop\AtmelProjects\Lights\Lights\Lights\main.asm</FILE><LINE>58</LINE></loop>
+  <Delay><FILE>C:\Users\belob\Desktop\AtmelProjects\Lights\Lights\Lights\main.asm</FILE><LINE>77</LINE></Delay>
+  <delay_loop><FILE>C:\Users\belob\Desktop\AtmelProjects\Lights\Lights\Lights\main.asm</FILE><LINE>82</LINE></delay_loop>
+ </LABELS>
+</ASSEMBLER_INFO>

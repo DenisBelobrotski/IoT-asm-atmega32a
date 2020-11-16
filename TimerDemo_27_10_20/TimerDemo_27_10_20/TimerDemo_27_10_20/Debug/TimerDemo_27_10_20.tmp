@@ -1,0 +1,29 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.7</VERSION>
+ <DEVICE>"ATmega32A"</DEVICE>
+ <WORKING_DIR>D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>D:/Program Files\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc</DIR>
+  <DIR>D:\Program Files\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>D:/Program Files\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc\m32adef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\Debug\TimerDemo_27_10_20.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>TimerDemo_27_10_20.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>TimerDemo_27_10_20.map</FILE>
+  <FILE>TimerDemo_27_10_20.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <reset><FILE>D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\main.asm</FILE><LINE>70</LINE></reset>
+  <timer><FILE>D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\main.asm</FILE><LINE>113</LINE></timer>
+  <end><FILE>D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\main.asm</FILE><LINE>111</LINE></end>
+ </LABELS>
+</ASSEMBLER_INFO>
