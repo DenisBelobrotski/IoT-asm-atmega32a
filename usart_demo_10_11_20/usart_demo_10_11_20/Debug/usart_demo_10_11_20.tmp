@@ -1,18 +1,18 @@
 <ASSEMBLER_INFO>
  <VERSION>2.2.7</VERSION>
  <DEVICE>"ATmega32A"</DEVICE>
- <WORKING_DIR>C:\Users\belob\Desktop\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\Debug</WORKING_DIR>
+ <WORKING_DIR>D:\MyData\Projects\Study\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\Debug</WORKING_DIR>
  <INCLUDE_PATH>
   <DIR>D:/Program Files\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc</DIR>
   <DIR>D:\Program Files\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
   <DIR></DIR>
  </INCLUDE_PATH>
- <SOURCE_FILE>C:\Users\belob\Desktop\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm</SOURCE_FILE>
+ <SOURCE_FILE>D:\MyData\Projects\Study\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm</SOURCE_FILE>
  <INCLUDED_FILES>
   <FILE>D:/Program Files\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc\m32adef.inc</FILE>
  </INCLUDED_FILES>
  <OBJECT_FILES>
-  <FILE>C:\Users\belob\Desktop\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\Debug\usart_demo_10_11_20.obj</FILE>
+  <FILE>D:\MyData\Projects\Study\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\Debug\usart_demo_10_11_20.obj</FILE>
  </OBJECT_FILES>
  <HEX_FILES>
   <FILE>usart_demo_10_11_20.hex</FILE>
@@ -22,11 +22,11 @@
   <FILE>usart_demo_10_11_20.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <reset><FILE>C:\Users\belob\Desktop\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm</FILE><LINE>7</LINE></reset>
-  <nextData><FILE>C:\Users\belob\Desktop\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm</FILE><LINE>47</LINE></nextData>
-  <text><FILE>C:\Users\belob\Desktop\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm</FILE><LINE>58</LINE></text>
-  <end><FILE>C:\Users\belob\Desktop\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm</FILE><LINE>45</LINE></end>
-  <endtext><FILE>C:\Users\belob\Desktop\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm</FILE><LINE>60</LINE></endtext>
-  <endData><FILE>C:\Users\belob\Desktop\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm</FILE><LINE>56</LINE></endData>
+  <reset><FILE>D:\MyData\Projects\Study\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm</FILE><LINE>7</LINE></reset>
+  <nextData><FILE>D:\MyData\Projects\Study\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm</FILE><LINE>50</LINE></nextData>
+  <text><FILE>D:\MyData\Projects\Study\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm</FILE><LINE>64</LINE></text>
+  <end><FILE>D:\MyData\Projects\Study\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm</FILE><LINE>45</LINE></end>
+  <endtext><FILE>D:\MyData\Projects\Study\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm</FILE><LINE>66</LINE></endtext>
+  <endData><FILE>D:\MyData\Projects\Study\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm</FILE><LINE>62</LINE></endData>
  </LABELS>
 </ASSEMBLER_INFO>

@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  C:\Users\belob\Desktop\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm Tue Nov 10 18:59:29 2020
+AVRASM ver. 2.2.7  D:\MyData\Projects\Study\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm Tue Nov 17 19:52:57 2020
 
 [builtin](2): Including file 'D:/Program Files\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc\m32adef.inc'
 [builtin](2): Including file 'D:/Program Files\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc\m32adef.inc'
@@ -865,15 +865,21 @@ AVRASM ver. 2.2.7  C:\Users\belob\Desktop\AtmelProjects\usart_demo_10_11_20\usar
 00002c 9478                      sei
 00002d cfff                      end: rjmp end
                                  
+                                 // если конец строки, то в Z перезаписываем адрес на начало строки, иначе ничего не делаем (переходим в конец и выходим из прерывания)
+                                 // brne - branch not equal
+                                 // cpi + brne - сравнение на равенство через вычитание и бит переноса
                                  nextData:
 00002e 9105                      lpm r16,Z+
 00002f b90c                      out UDR,r16
+                                 
 000030 30f0                      cpi ZH,high(endtext*2)
-000031 f421                      brne endData //
+000031 f421                      brne endData
 000032 37ee                      cpi ZL,low(endtext*2)
 000033 f411                      brne endData
+                                 
 000034 e0f0                      ldi ZH,high(text*2)
 000035 e6ee                      ldi ZL,low(text*2)
+                                 
 000036 9518                      endData: reti
                                  
                                  text:
