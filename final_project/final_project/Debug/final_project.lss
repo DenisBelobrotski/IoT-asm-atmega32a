@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  D:\MyData\Projects\Study\AtmelProjects\final_project\final_project\main.asm Mon Nov 16 23:05:18 2020
+AVRASM ver. 2.2.7  D:\MyData\Projects\Study\AtmelProjects\final_project\final_project\main.asm Sun Nov 22 19:46:10 2020
 
 [builtin](2): Including file 'D:/Program Files\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc\m32adef.inc'
 [builtin](2): Including file 'D:/Program Files\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc\m32adef.inc'
@@ -823,21 +823,21 @@ AVRASM ver. 2.2.7  D:\MyData\Projects\Study\AtmelProjects\final_project\final_pr
                                  .org 0
 000000 940c 001e                 jmp reset
                                  .org 0x1C //когда UDR становитс€ пустым, то здесь возникает прерывание (см. даташит)
-00001c 940c 0047                 jmp send_data
+00001c 940c 0049                 jmp send_data
                                  
                                  reset:
                                  
                                  // настраиваем указатель стека
-00001e e008                      ldi r16,high(RAMEND)
-00001f bf0e                      out SPH,r16
-000020 e50f                      ldi r16,low(RAMEND)
-000021 bf0d                      out SPL,r16
+00001e e008                      ldi r16, high(RAMEND)
+00001f bf0e                      out SPH, r16
+000020 e50f                      ldi r16, low(RAMEND)
+000021 bf0d                      out SPL, r16
                                  
                                  //Ќастраиваем скорость работы USART 9600
-000022 e000                      ldi r16,0
-000023 bd00                      out UBRRH,r16
-000024 e303                      ldi r16,51
-000025 b909                      out UBRRL,r16
+000022 e000                      ldi r16, 0
+000023 bd00                      out UBRRH, r16
+000024 e303                      ldi r16, 51
+000025 b909                      out UBRRL, r16
                                  
                                  // UDRIE разрешает прерывание, если UDR пустой
                                  //
@@ -847,225 +847,267 @@ AVRASM ver. 2.2.7  D:\MyData\Projects\Study\AtmelProjects\final_project\final_pr
                                  // RXEN разрешение на прием
                                  // RXCIE включает прерывание на прием
                                  //
-000026 e208                      ldi r16,(1<<UDRIE)|(1<<TXEN)
-000027 b90a                      out UCSRB,r16
+000026 e208                      ldi r16, (1<<UDRIE)|(1<<TXEN)
+000027 b90a                      out UCSRB, r16
                                  
-                                 // PC0 на вход
-000028 98a0                      cbi DDRC, 0
-000029 9aa8                      sbi PORTC, 0
-                                 // PC1 на вход
-00002a 98a1                      cbi DDRC, 1
-00002b 9aa9                      sbi PORTC, 1
-                                 // PC2 на вход
-00002c 98a2                      cbi DDRC, 2
-00002d 9aaa                      sbi PORTC, 2
+                                 // PC5 на вход
+000028 98a5                      cbi DDRC, 5
+000029 9aad                      sbi PORTC, 5
+                                 // PC6 на вход
+00002a 98a6                      cbi DDRC, 6
+00002b 9aae                      sbi PORTC, 6
+                                 // PC7 на вход
+00002c 98a7                      cbi DDRC, 7
+00002d 9aaf                      sbi PORTC, 7
+                                 
+                                 // PC0 на выход
+00002e 9aa0                      sbi DDRC, 0
+                                 // PC1 на выход
+00002f 9aa1                      sbi DDRC, 1
+                                 // PC2 на выход
+000030 9aa2                      sbi DDRC, 2
                                  
                                  // биты дл€ определени€ набора посылаемых сообщений
-00002e e040                      ldi r20, 0b00000000
+000031 e040                      ldi r20, 0b00000000
                                  
                                  // обнул€ем регистр дл€ указател€ на текст
-00002f e0f0                      ldi ZH, 0
-000030 e0e0                      ldi ZL, 0
+000032 e0f0                      ldi ZH, 0
+000033 e0e0                      ldi ZL, 0
+                                 
+                                 // включаем прерывани€
+000034 9478                      sei
                                  
                                  loop:
                                  
-000031 3040                      cpi r20, 0b00000000
+000035 3040                      cpi r20, 0b00000000
                                  
                                  //debug simulator
-000032 f4a1                      brne debug //***
+                                 //brne debug //***
                                  
-000033 f7e9                      brne loop
+000036 f7f1                      brne loop
                                  
-000034 e0f0                      ldi ZH, 0
-000035 e0e0                      ldi ZL, 0
+                                 // reset Z
+000037 e0f0                      ldi ZH, 0
+000038 e0e0                      ldi ZL, 0
                                  
-000036 9b98                      sbis PINC, 0
-000037 c001                      rjmp button_0_click
-000038 c002                      rjmp button_0_not_click
+                                 // check button 1 (PC5)
+000039 9b9d                      sbis PINC, 5
+00003a c001                      rjmp button_0_click
+00003b c002                      rjmp button_0_not_click
                                  
                                  button_0_click:
-000039 e001                      ldi r16, 0b00000001
-00003a 2b40                      or r20, r16
+00003c e001                      ldi r16, 0b00000001
+00003d 2b40                      or r20, r16
                                  button_0_not_click:
                                  
-00003b 9b99                      sbis PINC, 1
-00003c c001                      rjmp button_1_click
-00003d c002                      rjmp button_1_not_click
+                                 // check button 2 (PC6)
+00003e 9b9e                      sbis PINC, 6
+00003f c001                      rjmp button_1_click
+000040 c002                      rjmp button_1_not_click
                                  
                                  button_1_click:
-00003e e002                      ldi r16, 0b00000010
-00003f 2b40                      or r20, r16
+000041 e002                      ldi r16, 0b00000010
+000042 2b40                      or r20, r16
                                  button_1_not_click:
                                  
-000040 9b9a                      sbis PINC, 2
-000041 c001                      rjmp button_2_click
-000042 c002                      rjmp button_2_not_click
+                                 // check button 3 (PC7)
+000043 9b9f                      sbis PINC, 7
+000044 c001                      rjmp button_2_click
+000045 c002                      rjmp button_2_not_click
                                  
                                  button_2_click:
-000043 e004                      ldi r16, 0b00000100
-000044 2b40                      or r20, r16
+000046 e004                      ldi r16, 0b00000100
+000047 2b40                      or r20, r16
                                  button_2_not_click:
                                  
                                  //debug simulator
-000045 c001                      rjmp debug //***
-                                 end_debug: //***
+                                 //rjmp debug //***
+                                 //end_debug: //***
                                  
-000046 cfea                      rjmp loop
+000048 cfec                      rjmp loop
                                  
                                  
                                  
-                                 debug: //***
+                                 //debug: //***
                                  send_data:
                                  
-000047 30f0                      cpi ZH, 0
-000048 f4f1                      brne already_sending
-000049 30e0                      cpi ZL, 0
-00004a f4e1                      brne already_sending
+                                 // check interruption and buttons
+                                 
+                                 // PC5 + PC0
+000049 9b9d                      sbis PINC, 5
+00004a 9aa8                      sbi PORTC, 0
+00004b 999d                      sbic PINC, 5
+00004c 98a8                      cbi PORTC, 0
+                                 
+                                 // PC6 + PC1
+00004d 9b9e                      sbis PINC, 6
+00004e 9aa9                      sbi PORTC, 1
+00004f 999e                      sbic PINC, 6
+000050 98a9                      cbi PORTC, 1
+                                 
+                                 // PC7 + PC2
+000051 9b9f                      sbis PINC, 7
+000052 9aaa                      sbi PORTC, 2
+000053 999f                      sbic PINC, 7
+000054 98aa                      cbi PORTC, 2
+                                 
+                                 
+                                 // send some "empty" data
+                                 // working only while buttons not clicked
+000055 e20a                      ldi r16, 42 // sybol "*"
+000056 b90c                      out UDR, r16
+                                 
+                                 
+                                 // check has some data already sending
+000057 30f0                      cpi ZH, 0
+000058 f4f1                      brne already_sending
+000059 30e0                      cpi ZL, 0
+00005a f4e1                      brne already_sending
                                  
                                  // check is button 1 clicked
-00004b e001                      ldi r16, 0b00000001
-00004c 2304                      and r16, r20
-00004d 3001                      cpi r16, 0b00000001
-00004e f429                      brne skip_button_1_start
+00005b e001                      ldi r16, 0b00000001
+00005c 2304                      and r16, r20
+00005d 3001                      cpi r16, 0b00000001
+00005e f429                      brne skip_button_1_start
                                  
                                  // set data pointer
-00004f e0f1                      ldi ZH, high(button_text_1 * 2)
-000050 e2ec                      ldi ZL, low(button_text_1 * 2)
+00005f e0f1                      ldi ZH, high(button_text_1 * 2)
+000060 e4ea                      ldi ZL, low(button_text_1 * 2)
                                  // send data
-000051 9105                      lpm r16,Z+
-000052 b90c                      out UDR,r16
+000061 9105                      lpm r16,Z+
+000062 b90c                      out UDR,r16
                                  // TODO: check end of text
                                  // sending completed
-000053 c040                      rjmp end_send_data
+000063 c040                      rjmp end_send_data
                                  
                                  skip_button_1_start:
                                  
                                  
                                  // check is button 2 clicked
-000054 e002                      ldi r16, 0b00000010
-000055 2304                      and r16, r20
-000056 3002                      cpi r16, 0b00000010
-000057 f429                      brne skip_button_2_start
+000064 e002                      ldi r16, 0b00000010
+000065 2304                      and r16, r20
+000066 3002                      cpi r16, 0b00000010
+000067 f429                      brne skip_button_2_start
                                  
                                  // set data pointer
-000058 e0f1                      ldi ZH, high(button_text_2 * 2)
-000059 e3e6                      ldi ZL, low(button_text_2 * 2)
+000068 e0f1                      ldi ZH, high(button_text_2 * 2)
+000069 e5e4                      ldi ZL, low(button_text_2 * 2)
                                  // send data
-00005a 9105                      lpm r16,Z+
-00005b b90c                      out UDR,r16
+00006a 9105                      lpm r16,Z+
+00006b b90c                      out UDR,r16
                                  // TODO: check end of text
                                  // sending completed
-00005c c037                      rjmp end_send_data
+00006c c037                      rjmp end_send_data
                                  
                                  skip_button_2_start:
                                  
                                  
                                  // check is button 3 clicked
-00005d e004                      ldi r16, 0b00000100
-00005e 2304                      and r16, r20
-00005f 3004                      cpi r16, 0b00000100
-000060 f429                      brne skip_button_3_start
+00006d e004                      ldi r16, 0b00000100
+00006e 2304                      and r16, r20
+00006f 3004                      cpi r16, 0b00000100
+000070 f429                      brne skip_button_3_start
                                  
                                  // set data pointer
-000061 e0f1                      ldi ZH, high(button_text_3 * 2)
-000062 e4e0                      ldi ZL, low(button_text_3 * 2)
+000071 e0f1                      ldi ZH, high(button_text_3 * 2)
+000072 e5ee                      ldi ZL, low(button_text_3 * 2)
                                  // send data
-000063 9105                      lpm r16,Z+
-000064 b90c                      out UDR,r16
+000073 9105                      lpm r16,Z+
+000074 b90c                      out UDR,r16
                                  // TODO: check end of text
                                  // sending completed
-000065 c02e                      rjmp end_send_data
+000075 c02e                      rjmp end_send_data
                                  
                                  skip_button_3_start:
                                  
-000066 c02d                      rjmp end_send_data
+000076 c02d                      rjmp end_send_data
                                  
                                  already_sending:
                                  
                                  
                                  // check is button 1 sending
-000067 e001                      ldi r16, 0b00000001
-000068 2304                      and r16, r20
-000069 3001                      cpi r16, 0b00000001
-00006a f459                      brne skip_button_1_send
+000077 e001                      ldi r16, 0b00000001
+000078 2304                      and r16, r20
+000079 3001                      cpi r16, 0b00000001
+00007a f459                      brne skip_button_1_send
                                  
                                  // send button 1 text
-00006b 9105                      lpm r16, Z+
-00006c b90c                      out UDR, r16
+00007b 9105                      lpm r16, Z+
+00007c b90c                      out UDR, r16
                                  
                                  // check is button 1 text ended
-00006d 30f1                      cpi ZH, high(end_button_text_1 * 2)
-00006e f529                      brne end_send_data
-00006f 33e6                      cpi ZL, low(end_button_text_1 * 2)
-000070 f519                      brne end_send_data
+00007d 30f1                      cpi ZH, high(end_button_text_1 * 2)
+00007e f529                      brne end_send_data
+00007f 35e4                      cpi ZL, low(end_button_text_1 * 2)
+000080 f519                      brne end_send_data
                                  
                                  // clear bit
-000071 ef0e                      ldi r16, 0b11111110
-000072 2340                      and r20, r16
+000081 ef0e                      ldi r16, 0b11111110
+000082 2340                      and r20, r16
                                  
                                  // clear text pointer
-000073 e0f0                      ldi ZH, 0
-000074 e0e0                      ldi ZL, 0
+000083 e0f0                      ldi ZH, 0
+000084 e0e0                      ldi ZL, 0
                                  
-000075 c01e                      rjmp end_send_data
+000085 c01e                      rjmp end_send_data
                                  
                                  skip_button_1_send:
                                  
                                  
                                  // check is button 2 sending
-000076 e002                      ldi r16, 0b00000010
-000077 2304                      and r16, r20
-000078 3002                      cpi r16, 0b00000010
-000079 f459                      brne skip_button_2_send
+000086 e002                      ldi r16, 0b00000010
+000087 2304                      and r16, r20
+000088 3002                      cpi r16, 0b00000010
+000089 f459                      brne skip_button_2_send
                                  
                                  // send button 2 text
-00007a 9105                      lpm r16, Z+
-00007b b90c                      out UDR, r16
+00008a 9105                      lpm r16, Z+
+00008b b90c                      out UDR, r16
                                  
                                  // check is button 2 text ended
-00007c 30f1                      cpi ZH, high(end_button_text_2 * 2)
-00007d f4b1                      brne end_send_data
-00007e 34e0                      cpi ZL, low(end_button_text_2 * 2)
-00007f f4a1                      brne end_send_data
+00008c 30f1                      cpi ZH, high(end_button_text_2 * 2)
+00008d f4b1                      brne end_send_data
+00008e 35ee                      cpi ZL, low(end_button_text_2 * 2)
+00008f f4a1                      brne end_send_data
                                  
                                  // clear bit
-000080 ef0d                      ldi r16, 0b11111101
-000081 2340                      and r20, r16
+000090 ef0d                      ldi r16, 0b11111101
+000091 2340                      and r20, r16
                                  
                                  // clear text pointer
-000082 e0f0                      ldi ZH, 0
-000083 e0e0                      ldi ZL, 0
+000092 e0f0                      ldi ZH, 0
+000093 e0e0                      ldi ZL, 0
                                  
-000084 c00f                      rjmp end_send_data
+000094 c00f                      rjmp end_send_data
                                  
                                  skip_button_2_send:
                                  
                                  
                                  // check is button 3 sending
-000085 e004                      ldi r16, 0b00000100
-000086 2304                      and r16, r20
-000087 3004                      cpi r16, 0b00000100
-000088 f459                      brne skip_button_3_send
+000095 e004                      ldi r16, 0b00000100
+000096 2304                      and r16, r20
+000097 3004                      cpi r16, 0b00000100
+000098 f459                      brne skip_button_3_send
                                  
                                  // send button 3 text
-000089 9105                      lpm r16, Z+
-00008a b90c                      out UDR, r16
+000099 9105                      lpm r16, Z+
+00009a b90c                      out UDR, r16
                                  
                                  // check is button 3 text ended
-00008b 30f1                      cpi ZH, high(end_button_text_3 * 2)
-00008c f439                      brne end_send_data
-00008d 34ea                      cpi ZL, low(end_button_text_3 * 2)
-00008e f429                      brne end_send_data
+00009b 30f1                      cpi ZH, high(end_button_text_3 * 2)
+00009c f439                      brne end_send_data
+00009d 36e8                      cpi ZL, low(end_button_text_3 * 2)
+00009e f429                      brne end_send_data
                                  
                                  // clear bit
-00008f ef0b                      ldi r16, 0b11111011
-000090 2340                      and r20, r16
+00009f ef0b                      ldi r16, 0b11111011
+0000a0 2340                      and r20, r16
                                  
                                  // clear text pointer
-000091 e0f0                      ldi ZH, 0
-000092 e0e0                      ldi ZL, 0
+0000a1 e0f0                      ldi ZH, 0
+0000a2 e0e0                      ldi ZL, 0
                                  
-000093 c000                      rjmp end_send_data
+0000a3 c000                      rjmp end_send_data
                                  
                                  skip_button_3_send:
                                  
@@ -1073,39 +1115,35 @@ AVRASM ver. 2.2.7  D:\MyData\Projects\Study\AtmelProjects\final_project\final_pr
                                  end_send_data:
                                  
                                  // debug simulator
-000094 cfb1                      rjmp end_debug //***
+                                 //rjmp end_debug //***
                                  
-000095 9518                      reti
-                                 
-                                 //no_button_text:
-                                 //.db "no_buttons:"
-                                 //end_no_button_text:
+0000a4 9518                      reti
                                  
                                  button_text_1:
-000096 7562
-000097 7474
-000098 6e6f
-000099 315f
-D:\MyData\Projects\Study\AtmelProjects\final_project\final_project\main.asm(264): warning: .cseg .db misalignment - padding zero byte
-00009a 003a                      .db "button_1:"
+0000a5 7562
+0000a6 7474
+0000a7 6e6f
+0000a8 315f
+D:\MyData\Projects\Study\AtmelProjects\final_project\final_project\main.asm(302): warning: .cseg .db misalignment - padding zero byte
+0000a9 003a                      .db "button_1:"
                                  end_button_text_1:
                                  
                                  button_text_2:
-00009b 7562
-00009c 7474
-00009d 6e6f
-00009e 325f
-D:\MyData\Projects\Study\AtmelProjects\final_project\final_project\main.asm(268): warning: .cseg .db misalignment - padding zero byte
-00009f 003a                      .db "button_2:"
+0000aa 7562
+0000ab 7474
+0000ac 6e6f
+0000ad 325f
+D:\MyData\Projects\Study\AtmelProjects\final_project\final_project\main.asm(306): warning: .cseg .db misalignment - padding zero byte
+0000ae 003a                      .db "button_2:"
                                  end_button_text_2:
                                  
                                  button_text_3:
-0000a0 7562
-0000a1 7474
-0000a2 6e6f
-0000a3 335f
-D:\MyData\Projects\Study\AtmelProjects\final_project\final_project\main.asm(272): warning: .cseg .db misalignment - padding zero byte
-0000a4 003a                      .db "button_3:"
+0000af 7562
+0000b0 7474
+0000b1 6e6f
+0000b2 335f
+D:\MyData\Projects\Study\AtmelProjects\final_project\final_project\main.asm(310): warning: .cseg .db misalignment - padding zero byte
+0000b3 003a                      .db "button_3:"
                                  end_button_text_3:
 
 
@@ -1126,7 +1164,7 @@ counted separately from r26..r31 here.
 "ATmega32A" register use summary:
 x  :   0 y  :   0 z  :   6 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  52 r17:   0 r18:   0 r19:   0 r20:  14 
+r13:   0 r14:   0 r15:   0 r16:  54 r17:   0 r18:   0 r19:   0 r20:  14 
 r21:   0 r22:   0 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
 r29:   0 r30:  12 r31:  12 
 Registers used: 5 out of 35 (14.3%)
@@ -1136,27 +1174,27 @@ Registers used: 5 out of 35 (14.3%)
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
 brcc  :   0 brcs  :   0 break :   0 breq  :   0 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
-brne  :  16 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   3 cbr   :   0 
+brne  :  15 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   6 cbr   :   0 
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
 cpi   :  15 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
 fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   0 jmp   :   2 
-ld    :   0 ldd   :   0 ldi   :  34 lds   :   0 lpm   :   6 lsl   :   0 
+ld    :   0 ldd   :   0 ldi   :  35 lds   :   0 lpm   :   6 lsl   :   0 
 lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   0 or    :   3 ori   :   0 out   :  11 pop   :   0 
-push  :   0 rcall :   0 ret   :   0 reti  :   1 rjmp  :  16 rol   :   0 
-ror   :   0 sbc   :   0 sbci  :   0 sbi   :   3 sbic  :   0 sbis  :   3 
+neg   :   0 nop   :   0 or    :   3 ori   :   0 out   :  12 pop   :   0 
+push  :   0 rcall :   0 ret   :   0 reti  :   1 rjmp  :  14 rol   :   0 
+ror   :   0 sbc   :   0 sbci  :   0 sbi   :   9 sbic  :   3 sbis  :   6 
 sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
-sei   :   0 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
+sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :   0 
 sub   :   0 subi  :   0 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 13 out of 113 (11.5%)
+Instructions used: 15 out of 113 (13.3%)
 
 "ATmega32A" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x00014a    248     30    278   32768   0.8%
+[.cseg] 0x000000 0x000168    278     30    308   32768   0.9%
 [.dseg] 0x000060 0x000060      0      0      0    2048   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 

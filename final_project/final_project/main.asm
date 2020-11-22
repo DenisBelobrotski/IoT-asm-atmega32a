@@ -7,16 +7,16 @@ jmp send_data
 reset:
 
 // настраиваем указатель стека
-ldi r16,high(RAMEND)
-out SPH,r16
-ldi r16,low(RAMEND)
-out SPL,r16
+ldi r16, high(RAMEND)
+out SPH, r16
+ldi r16, low(RAMEND)
+out SPL, r16
 
 //Настраиваем скорость работы USART 9600
-ldi r16,0
-out UBRRH,r16
-ldi r16,51
-out UBRRL,r16
+ldi r16, 0
+out UBRRH, r16
+ldi r16, 51
+out UBRRL, r16
 
 // UDRIE разрешает прерывание, если UDR пустой
 //
@@ -26,18 +26,25 @@ out UBRRL,r16
 // RXEN разрешение на прием
 // RXCIE включает прерывание на прием
 //
-ldi r16,(1<<UDRIE)|(1<<TXEN)
-out UCSRB,r16
+ldi r16, (1<<UDRIE)|(1<<TXEN)
+out UCSRB, r16
 
-// PC0 на вход
-cbi DDRC, 0
-sbi PORTC, 0
-// PC1 на вход
-cbi DDRC, 1
-sbi PORTC, 1
-// PC2 на вход
-cbi DDRC, 2
-sbi PORTC, 2
+// PC5 на вход
+cbi DDRC, 5
+sbi PORTC, 5
+// PC6 на вход
+cbi DDRC, 6
+sbi PORTC, 6
+// PC7 на вход
+cbi DDRC, 7
+sbi PORTC, 7
+
+// PC0 на выход
+sbi DDRC, 0
+// PC1 на выход
+sbi DDRC, 1
+// PC2 на выход
+sbi DDRC, 2
 
 // биты для определения набора посылаемых сообщений
 ldi r20, 0b00000000
@@ -46,19 +53,24 @@ ldi r20, 0b00000000
 ldi ZH, 0
 ldi ZL, 0
 
+// включаем прерывания
+sei
+
 loop:
 
 cpi r20, 0b00000000
 
 //debug simulator
-brne debug //***
+//brne debug //***
 
 brne loop
 
+// reset Z
 ldi ZH, 0
 ldi ZL, 0
 
-sbis PINC, 0
+// check button 1 (PC5)
+sbis PINC, 5
 rjmp button_0_click
 rjmp button_0_not_click
 
@@ -67,7 +79,8 @@ ldi r16, 0b00000001
 or r20, r16
 button_0_not_click:
 
-sbis PINC, 1
+// check button 2 (PC6)
+sbis PINC, 6
 rjmp button_1_click
 rjmp button_1_not_click
 
@@ -76,7 +89,8 @@ ldi r16, 0b00000010
 or r20, r16
 button_1_not_click:
 
-sbis PINC, 2
+// check button 3 (PC7)
+sbis PINC, 7
 rjmp button_2_click
 rjmp button_2_not_click
 
@@ -86,16 +100,44 @@ or r20, r16
 button_2_not_click:
 
 //debug simulator
-rjmp debug //***
-end_debug: //***
+//rjmp debug //***
+//end_debug: //***
 
 rjmp loop
 
 
 
-debug: //***
+//debug: //***
 send_data:
 
+// check interruption and buttons
+
+// PC5 + PC0
+sbis PINC, 5
+sbi PORTC, 0
+sbic PINC, 5
+cbi PORTC, 0
+
+// PC6 + PC1
+sbis PINC, 6
+sbi PORTC, 1
+sbic PINC, 6
+cbi PORTC, 1
+
+// PC7 + PC2
+sbis PINC, 7
+sbi PORTC, 2
+sbic PINC, 7
+cbi PORTC, 2
+
+
+// send some "empty" data
+// working only while buttons not clicked
+ldi r16, 42 // sybol "*"
+out UDR, r16
+
+
+// check has some data already sending
 cpi ZH, 0
 brne already_sending
 cpi ZL, 0
@@ -252,13 +294,9 @@ skip_button_3_send:
 end_send_data:
 
 // debug simulator
-rjmp end_debug //***
+//rjmp end_debug //***
 
 reti
-
-//no_button_text:
-//.db "no_buttons:"
-//end_no_button_text:
 
 button_text_1:
 .db "button_1:"
