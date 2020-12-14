@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\main.asm Tue Oct 27 19:56:22 2020
+AVRASM ver. 2.2.7  D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\main.asm Mon Dec 14 23:03:23 2020
 
 [builtin](2): Including file 'D:/Program Files\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc\m32adef.inc'
 [builtin](2): Including file 'D:/Program Files\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc\m32adef.inc'
@@ -877,16 +877,78 @@ AVRASM ver. 2.2.7  D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\Tim
                                  out PORTC, r16
                                  reti // выход из обработчика прерываний*/
                                  
-                                 // Task 1
+                                 /*// Task 1
                                  
-                                 // Моргаем светодиодом с частотой 1 Гц
-                                 // Диод на PC0
+                                 // Моргаем светодиодом с частотой 2 Гц
+                                 // Диод на PC1
+                                 // Частота контроллера 8 МГц
+                                 
+                                 .org 0x00 //говорит компилятору поместить код именно по заданному адресу (начиная с заданного адреса)
+                                 jmp reset
+                                 .org 0x0E 
+                                 jmp timer
+                                 
+                                 reset:
+                                 // установить указатель стека (на последнюю область оперативной памяти)
+                                 // SP - stack pointer (16-bit), SPL - low SP, SPH - high SP
+                                 ldi r16, low(RAMEND)
+                                 out SPL, r16
+                                 ldi r16, high(RAMEND)
+                                 out SPH, r16
+                                 
+                                 // Настраиваем порт C1 на выход
+                                 sbi DDRC, 1
+                                 cbi PORTC, 1
+                                 
+                                 // Настраиваем таймер 1
+                                 ldi r16, 0
+                                 out TCNT1H, r16
+                                 out TCNT1L, r16
+                                 
+                                 // Ставим предделитель в 64
+                                 // Обнуляем таймер при совпадении с регистром сравнения OCR1A
+                                 ldi r16, (1 << CS10) | (1 << CS11) | (1 << WGM12)
+                                 // or 
+                                 // ldi r16, 0b00001011
+                                 out TCCR1B, r16
+                                 
+                                 // Настраиваем регистр сравнения OCR1A
+                                 ldi r16, high(31250)
+                                 out OCR1AH, r16
+                                 ldi r16, low(31250)
+                                 out OCR1AL, r16
+                                 
+                                 // Разрешаем прерывание по совпадению с регистром сравнения
+                                 ldi r16, (1 << OCIE1A)
+                                 out TIMSK, r16
+                                 
+                                 // для таймера
+                                 ldi r17, 0b00000010
+                                 
+                                 // Разрешаем все прерывания
+                                 // Ставит бит i в 1
+                                 sei
+                                 
+                                 end: rjmp end
+                                 
+                                 timer:
+                                 in r16, PINC
+                                 eor r16, r17
+                                 out PORTC, r16
+                                 reti // выход из обработчика прерываний
+                                 
+                                 */
+                                 
+                                 // Task 2
+                                 
+                                 // Ускоряем при нажатии на кнопку
+                                 // Диод на PC1
                                  // Частота контроллера 8 МГц
                                  
                                  .org 0x00 //говорит компилятору поместить код именно по заданному адресу (начиная с заданного адреса)
 000000 940c 0010                 jmp reset
                                  .org 0x0E 
-00000e 940c 0024                 jmp timer
+00000e 940c 0028                 jmp timer
                                  
                                  reset:
                                  // установить указатель стека (на последнюю область оперативной памяти)
@@ -900,43 +962,68 @@ AVRASM ver. 2.2.7  D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\Tim
 000014 9aa1                      sbi DDRC, 1
 000015 98a9                      cbi PORTC, 1
                                  
+                                 // PC 5 на вход на уменьшение
+000016 98a5                      cbi DDRC, 5
+000017 9aad                      sbi PORTC, 5
+                                 
+                                 // PC6 на вход на увеличение
+000018 98a6                      cbi DDRC, 6
+000019 9aae                      sbi PORTC, 6
+                                 
                                  // Настраиваем таймер 1
-000016 e000                      ldi r16, 0
-000017 bd0d                      out TCNT1H, r16
-000018 bd0c                      out TCNT1L, r16
+00001a e000                      ldi r16, 0
+00001b bd0d                      out TCNT1H, r16
+00001c bd0c                      out TCNT1L, r16
                                  
                                  // Ставим предделитель в 64
                                  // Обнуляем таймер при совпадении с регистром сравнения OCR1A
-000019 e00b                      ldi r16, (1 << CS10) | (1 << CS11) | (1 << WGM12)
+00001d e00b                      ldi r16, (1 << CS10) | (1 << CS11) | (1 << WGM12)
                                  // or 
                                  // ldi r16, 0b00001011
-00001a bd0e                      out TCCR1B, r16
+00001e bd0e                      out TCCR1B, r16
                                  
                                  // Настраиваем регистр сравнения OCR1A
-00001b e70a                      ldi r16, high(31250)
-00001c bd0b                      out OCR1AH, r16
-00001d e102                      ldi r16, low(31250)
-00001e bd0a                      out OCR1AL, r16
+00001f e70a                      ldi r16, high(31250)
+000020 bd0b                      out OCR1AH, r16
+000021 e102                      ldi r16, low(31250)
+000022 bd0a                      out OCR1AL, r16
                                  
                                  // Разрешаем прерывание по совпадению с регистром сравнения
-00001f e100                      ldi r16, (1 << OCIE1A)
-000020 bf09                      out TIMSK, r16
+000023 e100                      ldi r16, (1 << OCIE1A)
+000024 bf09                      out TIMSK, r16
                                  
                                  // для таймера
-000021 e012                      ldi r17, 0b00000010
+000025 e012                      ldi r17, 0b00000010
                                  
                                  // Разрешаем все прерывания
                                  // Ставит бит i в 1
-000022 9478                      sei
+000026 9478                      sei
                                  
-000023 cfff                      end: rjmp end
+000027 cfff                      end: rjmp end
                                  
                                  timer:
-000024 b303                      in r16, PINC
-000025 2701                      eor r16, r17
-000026 bb05                      out PORTC, r16
-000027 9518                      reti // выход из обработчика прерываний
                                  
+000028 9b9d                      sbis PINC, 5
+000029 c002                      rjmp decrease
+00002a 9b9e                      sbis PINC, 6
+00002b c003                      rjmp increase
+                                 
+                                 decrease:
+00002c b50a                      in r16, OCR1AL
+00002d b51b                      in r17, OCR1AH
+                                 //add 1
+00002e c001                      rjmp light
+                                 
+                                 increase:
+                                 //sub 1
+00002f c000                      rjmp light
+                                 
+                                 light:
+000030 b303                      in r16, PINC
+000031 2701                      eor r16, r17
+000032 bb05                      out PORTC, r16
+                                 
+000033 9518                      reti // выход из обработчика прерываний
 
 
 RESOURCE USE INFORMATION
@@ -956,7 +1043,7 @@ counted separately from r26..r31 here.
 "ATmega32A" register use summary:
 x  :   0 y  :   0 z  :   0 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  18 r17:   2 r18:   0 r19:   0 r20:   0 
+r13:   0 r14:   0 r15:   0 r16:  19 r17:   3 r18:   0 r19:   0 r20:   0 
 r21:   0 r22:   0 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
 r29:   0 r30:   0 r31:   0 
 Registers used: 2 out of 35 (5.7%)
@@ -967,26 +1054,26 @@ andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0
 brcc  :   0 brcs  :   0 break :   0 breq  :   0 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
 brne  :   0 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   1 cbr   :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   3 cbr   :   0 
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
 cpi   :   0 cpse  :   0 dec   :   0 eor   :   1 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   1 inc   :   0 jmp   :   2 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   3 inc   :   0 jmp   :   2 
 ld    :   0 ldd   :   0 ldi   :   8 lds   :   0 lpm   :   0 lsl   :   0 
 lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
 neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :   9 pop   :   0 
-push  :   0 rcall :   0 ret   :   0 reti  :   1 rjmp  :   1 rol   :   0 
-ror   :   0 sbc   :   0 sbci  :   0 sbi   :   1 sbic  :   0 sbis  :   0 
+push  :   0 rcall :   0 ret   :   0 reti  :   1 rjmp  :   5 rol   :   0 
+ror   :   0 sbc   :   0 sbci  :   0 sbi   :   3 sbic  :   0 sbis  :   2 
 sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :   0 
 sub   :   0 subi  :   0 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 10 out of 113 (8.8%)
+Instructions used: 11 out of 113 (9.7%)
 
 "ATmega32A" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x000050     56      0     56   32768   0.2%
+[.cseg] 0x000000 0x000068     80      0     80   32768   0.2%
 [.dseg] 0x000060 0x000060      0      0      0    2048   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 

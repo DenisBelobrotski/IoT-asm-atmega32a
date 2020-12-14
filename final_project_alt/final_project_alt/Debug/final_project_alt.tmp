@@ -1,0 +1,39 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.7</VERSION>
+ <DEVICE>"ATmega32A"</DEVICE>
+ <WORKING_DIR>D:\MyData\Projects\Study\AtmelProjects\final_project_alt\final_project_alt\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>D:/Program Files\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc</DIR>
+  <DIR>D:\Program Files\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>D:\MyData\Projects\Study\AtmelProjects\final_project_alt\final_project_alt\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>D:/Program Files\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc\m32adef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>D:\MyData\Projects\Study\AtmelProjects\final_project_alt\final_project_alt\Debug\final_project_alt.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>final_project_alt.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>final_project_alt.map</FILE>
+  <FILE>final_project_alt.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <reset><FILE>D:\MyData\Projects\Study\AtmelProjects\final_project_alt\final_project_alt\main.asm</FILE><LINE>18</LINE></reset>
+  <changeOCR0><FILE>D:\MyData\Projects\Study\AtmelProjects\final_project_alt\final_project_alt\main.asm</FILE><LINE>111</LINE></changeOCR0>
+  <set0><FILE>D:\MyData\Projects\Study\AtmelProjects\final_project_alt\final_project_alt\main.asm</FILE><LINE>87</LINE></set0>
+  <set1><FILE>D:\MyData\Projects\Study\AtmelProjects\final_project_alt\final_project_alt\main.asm</FILE><LINE>97</LINE></set1>
+  <end><FILE>D:\MyData\Projects\Study\AtmelProjects\final_project_alt\final_project_alt\main.asm</FILE><LINE>84</LINE></end>
+  <down_click><FILE>D:\MyData\Projects\Study\AtmelProjects\final_project_alt\final_project_alt\main.asm</FILE><LINE>120</LINE></down_click>
+  <down_not_click><FILE>D:\MyData\Projects\Study\AtmelProjects\final_project_alt\final_project_alt\main.asm</FILE><LINE>125</LINE></down_not_click>
+  <skip><FILE>D:\MyData\Projects\Study\AtmelProjects\final_project_alt\final_project_alt\main.asm</FILE><LINE>145</LINE></skip>
+  <out_OCR0><FILE>D:\MyData\Projects\Study\AtmelProjects\final_project_alt\final_project_alt\main.asm</FILE><LINE>141</LINE></out_OCR0>
+  <up_click><FILE>D:\MyData\Projects\Study\AtmelProjects\final_project_alt\final_project_alt\main.asm</FILE><LINE>132</LINE></up_click>
+  <up_not_click><FILE>D:\MyData\Projects\Study\AtmelProjects\final_project_alt\final_project_alt\main.asm</FILE><LINE>137</LINE></up_not_click>
+  <next_click><FILE>D:\MyData\Projects\Study\AtmelProjects\final_project_alt\final_project_alt\main.asm</FILE><LINE>152</LINE></next_click>
+  <next_not_click><FILE>D:\MyData\Projects\Study\AtmelProjects\final_project_alt\final_project_alt\main.asm</FILE><LINE>158</LINE></next_not_click>
+ </LABELS>
+</ASSEMBLER_INFO>

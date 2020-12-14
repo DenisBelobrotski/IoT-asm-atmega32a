@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\main.asm Mon Dec 14 23:03:23 2020
+AVRASM ver. 2.2.7  D:\MyData\Projects\Study\AtmelProjects\final_project_alt\final_project_alt\main.asm Mon Dec 14 23:20:34 2020
 
 
 EQU  SIGNATURE_000 0000001e
@@ -568,9 +568,20 @@ EQU  ACIaddr      00000024
 EQU  TWIaddr      00000026
 EQU  SPMRaddr     00000028
 EQU  INT_VECTORS_SIZE 0000002a
-CSEG reset        00000010
-CSEG timer        00000028
-CSEG end          00000027
-CSEG decrease     0000002c
-CSEG increase     0000002f
-CSEG light        00000030
+DEF  temp_0       r16
+DEF  delta        r17
+DEF  switcher     r18
+DEF  temp_1       r19
+CSEG reset        00000018
+CSEG changeOCR0   00000048
+CSEG set0         0000003d
+CSEG set1         00000041
+CSEG end          0000003c
+CSEG down_click   0000004c
+CSEG down_not_click 00000050
+CSEG skip         00000059
+CSEG out_OCR0     00000058
+CSEG up_click     00000053
+CSEG up_not_click 00000057
+CSEG next_click   0000005c
+CSEG next_not_click 00000061

@@ -22,8 +22,11 @@
   <FILE>TimerDemo_27_10_20.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <reset><FILE>D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\main.asm</FILE><LINE>70</LINE></reset>
-  <timer><FILE>D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\main.asm</FILE><LINE>113</LINE></timer>
-  <end><FILE>D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\main.asm</FILE><LINE>111</LINE></end>
+  <reset><FILE>D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\main.asm</FILE><LINE>132</LINE></reset>
+  <timer><FILE>D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\main.asm</FILE><LINE>183</LINE></timer>
+  <end><FILE>D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\main.asm</FILE><LINE>181</LINE></end>
+  <decrease><FILE>D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\main.asm</FILE><LINE>190</LINE></decrease>
+  <increase><FILE>D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\main.asm</FILE><LINE>196</LINE></increase>
+  <light><FILE>D:\MyData\Projects\Study\AtmelProjects\TimerDemo_27_10_20\TimerDemo_27_10_20\TimerDemo_27_10_20\main.asm</FILE><LINE>200</LINE></light>
  </LABELS>
 </ASSEMBLER_INFO>
