@@ -97,7 +97,7 @@ reti
 set1:
 
 // enable necessary lights
-in r16,PORTC
+in r16, PORTC
 mov temp_1, switcher
 com temp_1
 and temp_1, r16

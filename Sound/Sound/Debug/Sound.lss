@@ -1,10 +1,10 @@
 
-AVRASM ver. 2.2.7  D:\MyData\Projects\Study\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm Sat Dec 19 13:31:40 2020
+AVRASM ver. 2.2.7  D:\MyData\Projects\Study\AtmelProjects\Sound\Sound\main.asm Tue Dec 15 20:03:09 2020
 
 [builtin](2): Including file 'D:/Program Files\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc\m32adef.inc'
 [builtin](2): Including file 'D:/Program Files\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc\m32adef.inc'
                                  
-                                 //Настраиваем прерывания
+                                 .org 0
                                  
                                  ;***** Created: 2011-02-09 12:03 ******* Source: ATmega32A.xml ***********
                                  ;*************************************************************************
@@ -820,78 +820,53 @@ AVRASM ver. 2.2.7  D:\MyData\Projects\Study\AtmelProjects\usart_demo_10_11_20\us
                                  #endif  /* _M32ADEF_INC_ */
                                  
                                  
-                                 .org 0
-000000 940c 001e                 jmp reset
-                                 .org 0x1C //когда UDR становится пустым, то здесь возникает прерывание (см. даташит)
-00001c 940c 002e                 jmp nextData
+000000 940c 0018                 jmp reset
+                                 
+                                 .org 0x14
+000014 940c 002b                 jmp set0 // по совпадению с регистром сравнения
+000016 940c 002d                 jmp set1 // по переполнению таймера
+                                 
                                  
                                  reset:
+                                 //уазатель стека
+000018 e50f                      ldi r16, low(RAMEND)
+000019 bf0d                      out SPL, r16
+00001a e008                      ldi r16, high(RAMEND)
+00001b bf0e                      out SPH, r16
                                  
-                                 // настраиваем указатель стека
-00001e e008                      ldi r16,high(RAMEND)
-00001f bf0e                      out SPH,r16
-000020 e50f                      ldi r16,low(RAMEND)
-000021 bf0d                      out SPL,r16
+                                 // PC3 выход
+00001c 9aa3                      sbi DDRC, 3
+00001d 98ab                      cbi PORTC, 3
                                  
-                                 //Настраиваем скорость работы USART 9600
-000022 e000                      ldi r16,0
-000023 bd00                      out UBRRH,r16
-000024 e303                      ldi r16,51
-000025 b909                      out UBRRL,r16
+                                 //Настраиваем таймер1
+00001e e000                      ldi r16,0
+00001f bd0d                      out TCNT1H,r16
+000020 bd0c                      out TCNT1L,r16
                                  
-                                 // UDRIE разрешает прерывание, если UDR пустой
-                                 //
-                                 // TXEN разрешение на передачу
-                                 // TXCIE включает прерываение на передачу
-                                 //
-                                 // RXEN разрешение на прием
-                                 // RXCIE включает прерывание на прием
-                                 //
-000026 e208                      ldi r16,(1<<UDRIE)|(1<<TXEN)//|(1<<RXEN)
-000027 b90a                      out UCSRB,r16
+                                 // 15625 - 4 hz, 31250 - 2 hz
+000021 e000                      ldi r16,high(100)
+000022 bd0b                      out OCR1AH,r16
+000023 e604                      ldi r16,low(100)
+000024 bd0a                      out OCR1AL,r16
                                  
-                                 // Z - регистровая пара, которой соответствует что-то типа R30-R31
-                                 // ZH - старший байт (например R30)
-                                 // ZL - младший байт (например R31)
-                                 // флеш память адресуется словами (2 байта), поэтому умножаем адреса на 2
-                                 // lpm берет байт, который лежит по адресу, который записан в ZH-ZL
-                                 // "+" увеличит число в Z после выполнения команды
-                                 // sei ставит бит прерываний в регистр состояний, без этого прерывания работать не будут
-                                 // когда прерывание произошло, то этот бит ставится обратно в 0, пока не вызовется reti, тогда прерывания снова станут доступны
-000028 e0f0                      ldi ZH,high(text*2)
-000029 e6ee                      ldi ZL,low(text*2)
-00002a 9105                      lpm r16,Z+
-00002b b90c                      out UDR,r16
-00002c 9478                      sei
-00002d cfff                      end: rjmp end
+000025 e00b                      ldi r16,(1<<WGM12)|(1<<CS11)|(1<<CS10)
+000026 bd0e                      out TCCR1B,r16
                                  
-                                 // если конец строки, то в Z перезаписываем адрес на начало строки, иначе ничего не делаем (переходим в конец и выходим из прерывания)
-                                 // brne - branch not equal
-                                 // cpi + brne - сравнение на равенство через вычитание и бит переноса
-                                 nextData:
-00002e 9105                      lpm r16,Z+
-00002f b90c                      out UDR,r16
+000027 e103                      ldi r16,(1<<OCIE0)|(1<<TOIE0)|(1<<OCIE1A)
+000028 bf09                      out TIMSK,r16
                                  
-000030 30f0                      cpi ZH,high(endtext*2)
-000031 f421                      brne endData
-000032 37ee                      cpi ZL,low(endtext*2)
-000033 f411                      brne endData
+                                 // разрешаем прерывания
+000029 9478                      sei
                                  
-000034 e0f0                      ldi ZH,high(text*2)
-000035 e6ee                      ldi ZL,low(text*2)
+00002a cfff                      end: rjmp end
                                  
-000036 9518                      endData: reti
+                                 set0:
+00002b 98ab                      cbi PORTC, 3
+00002c 9518                      reti
                                  
-                                 text:
-000037 6548
-000038 6c6c
-000039 2c6f
-00003a 6620
-00003b 6972
-00003c 6e65
-00003d 7364
-00003e 2021                      .db "Hello, friends! "
-                                 endtext:
+                                 set1:
+00002d 9aab                      sbi PORTC, 3
+00002e 9518                      reti
 
 
 RESOURCE USE INFORMATION
@@ -909,39 +884,39 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega32A" register use summary:
-x  :   0 y  :   0 z  :   2 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
+x  :   0 y  :   0 z  :   0 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  14 r17:   0 r18:   0 r19:   0 r20:   0 
+r13:   0 r14:   0 r15:   0 r16:  15 r17:   0 r18:   0 r19:   0 r20:   0 
 r21:   0 r22:   0 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
-r29:   0 r30:   3 r31:   3 
-Registers used: 4 out of 35 (11.4%)
+r29:   0 r30:   0 r31:   0 
+Registers used: 1 out of 35 (2.9%)
 
 "ATmega32A" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   0 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
 brcc  :   0 brcs  :   0 break :   0 breq  :   0 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
-brne  :   2 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   0 cbr   :   0 
+brne  :   0 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   2 cbr   :   0 
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
-cpi   :   2 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   0 jmp   :   2 
-ld    :   0 ldd   :   0 ldi   :   9 lds   :   0 lpm   :   2 lsl   :   0 
+cpi   :   0 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   0 jmp   :   3 
+ld    :   0 ldd   :   0 ldi   :   7 lds   :   0 lpm   :   0 lsl   :   0 
 lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :   7 pop   :   0 
-push  :   0 rcall :   0 ret   :   0 reti  :   1 rjmp  :   1 rol   :   0 
-ror   :   0 sbc   :   0 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 
+neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :   8 pop   :   0 
+push  :   0 rcall :   0 ret   :   0 reti  :   2 rjmp  :   1 rol   :   0 
+ror   :   0 sbc   :   0 sbci  :   0 sbi   :   2 sbic  :   0 sbis  :   0 
 sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :   0 
 sub   :   0 subi  :   0 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 9 out of 113 (8.0%)
+Instructions used: 8 out of 113 (7.1%)
 
 "ATmega32A" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x00007e     58     16     74   32768   0.2%
+[.cseg] 0x000000 0x00005e     58      0     58   32768   0.2%
 [.dseg] 0x000060 0x000060      0      0      0    2048   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 

@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  D:\MyData\Projects\Study\AtmelProjects\usart_demo_10_11_20\usart_demo_10_11_20\main.asm Sat Dec 19 13:31:40 2020
+AVRASM ver. 2.2.7  D:\MyData\Projects\Study\AtmelProjects\Sound\Sound\main.asm Tue Dec 15 20:03:09 2020
 
 
 EQU  SIGNATURE_000 0000001e
@@ -568,9 +568,7 @@ EQU  ACIaddr      00000024
 EQU  TWIaddr      00000026
 EQU  SPMRaddr     00000028
 EQU  INT_VECTORS_SIZE 0000002a
-CSEG reset        0000001e
-CSEG nextData     0000002e
-CSEG text         00000037
-CSEG end          0000002d
-CSEG endtext      0000003f
-CSEG endData      00000036
+CSEG reset        00000018
+CSEG set0         0000002b
+CSEG set1         0000002d
+CSEG end          0000002a
